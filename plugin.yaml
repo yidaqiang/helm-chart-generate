@@ -1,0 +1,12 @@
+name: "chart-gen"
+version: "0.1.0"
+usege: "Please see https://github.com/yidaqiang/helm-chart-generate for usage"
+description: "Generate helm chart from templates"
+downloaders:
+  - command: "bin/helm-chart-generate"
+    protocols:
+      - "cm"
+useTunnel: false
+hooks:
+  install: "cd $HELM_PLUGIN_DIR; scripts/install_plugin.sh"
+  update: "cd $HELM_PLUGIN_DIR; scripts/install_plugin.sh"
