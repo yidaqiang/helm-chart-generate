@@ -1,6 +1,6 @@
 # helm chart generate
 
-<img align="right" src="https://github.com/yidaqiang/helm-chart-generate/raw/main/logo.png">
+<img align="right" height="100" src="https://github.com/yidaqiang/helm-chart-generate/raw/main/logo.png">
 
 [![GitHub Actions status](https://github.com/yidaqiang/helm-chart-generate/workflows/build/badge.svg)](https://github.com/yidaqiang/helm-chart-generate/actions?query=workflow%3Abuild)
 
