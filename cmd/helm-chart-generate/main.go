@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
+	helmchartgenerate "github.com/yidaqiang/helm-chart-generate"
 	"github.com/yidaqiang/helm-chart-generate/pkg/helm"
+	"io/fs"
 	"strconv"
 
 	//"helm.sh/helm/v3/pkg/chartutil"
@@ -114,9 +116,18 @@ func (g *genCmd) setFieldsFromEnv() {
 	}
 
 }
-func (g *genCmd) gen() error {
 
+func (g *genCmd) gen() error {
+	templatesFS := helmchartgenerate.GetTemplatesFS()
+	debugFS(templatesFS)
 	return nil
+}
+
+func debugFS(fsys fs.FS) {
+	fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
+		fmt.Printf("Found: %s (Dir: %v)\n", path, d.IsDir())
+		return nil
+	})
 }
 
 func main() {
