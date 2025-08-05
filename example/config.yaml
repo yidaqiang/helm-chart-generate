@@ -1,6 +1,29 @@
+chart:
+  name: ""
+  category: ""
+appVersion: ""
+keyword: []
+
+main_object_block: "primay"
+image:
+  name: ""
+  container: ""
+    name: ""
+  tag: ""
+description: ""
+introduction: ""
+
+
+values:
 ## 使用的资源对象
 deployment:
   enabled: true
+  containerPorts:
+    http: 80
+    https: 443
+  command: []
+  args: []
+  extraEnvVars: []
 
 service:
   enabled: true
@@ -16,6 +39,8 @@ ingress:
   enabled: true
   hostname: example.com
   path: /
+  tls: false
+  extraTls: []
 
 configMaps:
   enabled: true
@@ -24,27 +49,111 @@ configMaps:
       context:
         FOO: BOO
     - type: file
+      mountPath: /etc/application.yaml
+      context:
+        application.yml: |-
+            server:
+              port: 8081
+              servlet:
+                context-path: /springboot-demo
+              tomcat:
+                uri-encoding: utf-8
+    - type: file
       mountPath: /etc/nginx/nginx.conf
       context:
         nginx.conf: |-
-      
+            # 全局块
+            user nginx;                          # 指定 Nginx 工作进程运行的用户
+            worker_processes auto;               # 指定工作进程的数量，auto 表示根据 CPU 核心数自动调整
+            error_log /var/log/nginx/error.log;  # 指定错误日志文件的位置
+            pid /run/nginx.pid;                  # 指定 Nginx 的 PID 文件位置
+
+            # events 块
+            events {
+                worker_connections 1024;         # 每个工作进程的最大连接数
+                # use epoll;                     # 指定使用的事件驱动模型，epoll 是 Linux 下的高效模型
+            }
+
+            # http 块
+            http {
+                include /etc/nginx/mime.types;   # 包含 MIME 类型定义文件
+                default_type application/octet-stream;
+
+                log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                                '$status $body_bytes_sent "$http_referer" '
+                                '"$http_user_agent" "$http_x_forwarded_for"';
+
+                access_log /var/log/nginx/access.log main;  # 指定访问日志文件的位置和格式
+
+                sendfile on;                     # 开启高效文件传输模式
+                tcp_nopush on;                   # 开启 TCP_NOPUSH 选项，减少 TCP 包的数量
+                tcp_nodelay on;                  # 开启 TCP_NODELAY 选项，立即发送数据
+
+                keepalive_timeout 65;            # 设置长连接的超时时间
+
+                # server 块（虚拟主机配置）
+                server {
+                    listen 80;                   # 监听的端口
+                    server_name localhost;       # 服务器名称
+
+                    # location 块（处理特定路径的请求）
+                    location / {
+                        root /usr/share/nginx/html;  # 网站根目录
+                        index index.html index.htm; # 默认索引文件
+                    }
+
+                    # 错误页面配置
+                    error_page 404 /404.html;
+                    location = /404.html {
+                        root /usr/share/nginx/html;
+                    }
+
+                    error_page 500 502 503 504 /50x.html;
+                    location = /50x.html {
+                        root /usr/share/nginx/html;
+                    }
+                }
+            }
 
 secrets:
   enabled: true
+  data:
+    - type: env
+      context:
+        FOO: BOO
+    - type: file
+      mountPath: /etc/application.yaml
+      context:
+        application.yml: |-
+            server:
+              port: 8081
+              servlet:
+                context-path: /springboot-demo
+              tomcat:
+                uri-encoding: utf-8
 
+# 是否启用 RBAC
 rbac:
   enabled: false
+  rules: []
 
 persistentVolumeClaims:
   enabled: false
+  mountPath: "/data/pvc"
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+  existingClaim: ""
 
+# TODO
 networkPolicies:
   enabled: false
 
+# TODO
 podDisruptionBudgets:
   enabled: false
 
+# TODO
 serviceMonitors:
   enabled: false
-
-antiAffinity: bool

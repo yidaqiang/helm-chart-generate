@@ -7,10 +7,6 @@ annotations:
 apiVersion: v2
 appVersion: %%UPSTREAM_PROJECT_VERSION%%
 dependencies:
-  - condition: SUBCHART_NAME.enabled
-    name: SUBCHART_NAME
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: %%MAJOR_SUBCHART_VERSION_(A.X.X)%%
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     tags:
@@ -18,7 +14,7 @@ dependencies:
     version: 2.x.x
 description: %%DESCRIPTION%%
 home: https://bitnami.com
-icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/%%IMAGE_NAME%%/img/%%IMAGE_NAME%%-stack-220x234.png
+icon: https://github.com/yidaqiang/helm-chart-generate/raw/main/logo.png
 keywords:
   - %%UPSTREAM_PROJECT_KEYWORD%%
   - %%UPSTREAM_PROJECT_KEYWORD%%
@@ -28,8 +24,6 @@ maintainers:
     url: https://github.com/bitnami/charts
 name: %%CHART_NAME%%
 sources:
-  - https://github.com/bitnami/charts/tree/main/bitnami/%%IMAGE_NAME%%
-  - https://github.com/bitnami/containers/tree/main/bitnami/%%IMAGE_NAME%%
-  - %%UPSTREAM_PROJECT_SOURCE_CODE_URL%%
-  - ...
+  - https://github.com/open-hand/dockerfile/tree/master/javabase
+  - https://github.com/open-hand/dockerfile/tree/master/frontbase
 version: 0.1.0
