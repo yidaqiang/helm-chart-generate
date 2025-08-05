@@ -8,7 +8,7 @@ if [ -n "${HELM_PUSH_PLUGIN_NO_INSTALL_HOOK}" ]; then
 fi
 
 version="$(cat plugin.yaml | grep "version" | cut -d '"' -f 2)"
-echo "Downloading and installing helm-push v${version} ..."
+echo "Downloading and installing helm-chart-generate v${version} ..."
 
 url=""
 
@@ -38,11 +38,11 @@ esac
 
 
 if [ "$(uname)" = "Darwin" ]; then
-    url="https://github.com/chartmuseum/helm-push/releases/download/v${version}/helm-push_${version}_darwin_${arch}.tar.gz"
+    url="https://github.com/yidaqiang/helm-chart-generate/releases/download/${version}/helm-chart-generate_${version}_darwin_${arch}.tar.gz"
 elif [ "$(uname)" = "Linux" ] ; then
-    url="https://github.com/chartmuseum/helm-push/releases/download/v${version}/helm-push_${version}_linux_${arch}.tar.gz"
+    url="https://github.com/yidaqiang/helm-chart-generate/releases/download/${version}/helm-chart-generate_${version}_linux_${arch}.tar.gz"
 else
-    url="https://github.com/chartmuseum/helm-push/releases/download/v${version}/helm-push_${version}_windows_${arch}.tar.gz"
+    url="https://github.com/yidaqiang/helm-chart-generate/releases/download/${version}/helm-chart-generate_${version}_windows_${arch}.tar.gz"
 fi
 
 echo $url
@@ -57,5 +57,5 @@ else
     wget -q "${url}" -O "releases/v${version}.tar.gz"
 fi
 tar xzf "releases/v${version}.tar.gz" -C "releases/v${version}"
-mv "releases/v${version}/bin/helm-cm-push" "bin/helm-cm-push" || \
-    mv "releases/v${version}/bin/helm-cm-push.exe" "bin/helm-cm-push"
+mv "releases/v${version}/bin/helm-chart-generate" "bin/helm-chart-generate" || \
+    mv "releases/v${version}/bin/helm-chart-generate.exe" "bin/helm-chart-generate"
